@@ -1,5 +1,6 @@
 #import modules
 from base import *
+from config.proxy import Service, get_proxy
 from ui.ui_print import *
 import releases
 
@@ -40,7 +41,7 @@ def get(url):
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36','authorization': 'Bearer ' + api_key}
     response = None
     try:
-        response = session.get(url, headers=headers)
+        response = session.get(url, headers=headers, proxies=get_proxy(Service.REALDEBRID))
         logerror(response)
         response = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
     except Exception as e:
@@ -54,7 +55,7 @@ def post(url, data):
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36','authorization': 'Bearer ' + api_key}
     response = None
     try:
-        response = session.post(url, headers=headers, data=data)
+        response = session.post(url, headers=headers, data=data, proxies=get_proxy(Service.REALDEBRID))
         logerror(response)
         response = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
     except Exception as e:
@@ -70,7 +71,7 @@ def post(url, data):
 def delete(url):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36','authorization': 'Bearer ' + api_key}
     try:
-        requests.delete(url, headers=headers)
+        requests.delete(url, headers=headers, proxies=get_proxy(Service.REALDEBRID))
         # time.sleep(1)
     except Exception as e:
         ui_print("[realdebrid] error: (delete exception): " + str(e), debug=ui_settings.debug)

@@ -1,4 +1,6 @@
 #import modules
+from typing import Optional
+
 from base import *
 #import parent modules
 from content import classes
@@ -8,8 +10,8 @@ from pydantic_settings import BaseSettings
 
 # Get Trakt oauth details from env
 class Settings(BaseSettings):
-    client_id: str
-    client_secret: str
+    client_id: Optional[str] = ""
+    client_secret: Optional[str] = ""
 
     class Config:
         env_file = ".env"

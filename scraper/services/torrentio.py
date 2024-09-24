@@ -1,5 +1,6 @@
 # import modules
 from base import *
+from config.proxy import Service, get_proxy
 from ui.ui_print import *
 import releases
 
@@ -12,9 +13,8 @@ session = custom_session()
 
 def get(url):
     try:
-        response = session.get(url, timeout=60)
-        response = json.loads(
-            response.content, object_hook=lambda d: SimpleNamespace(**d))
+        response = session.get(url, timeout=60, proxies=get_proxy(Service.TORRENTIO))
+        response = json.loads(response.content, object_hook=lambda d: SimpleNamespace(**d))
         return response
     except:
         return None
